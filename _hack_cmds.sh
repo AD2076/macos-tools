@@ -190,8 +190,9 @@ case "$1" in
         done
     ;;
     --remove-installed-kexts)
+        if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
         for kext in $(printInstalledItems "Kexts"); do
-            removeKext "$kext"
+            removeKext "$kext" "$efi/EFI/CLOVER/kexts/Other"
         done
     ;;
     --remove-installed-apps)
@@ -206,14 +207,15 @@ case "$1" in
     ;;
     --remove-deprecated-kexts)
         # To override default list of deprecated kexts in macos-tools/org.the-braveknight.deprecated.plist, set 'Deprecated:Override Defaults' to 'true'.
+        if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
         override=$(printValue "Deprecated:Override Defaults" "$repo_plist" 2> /dev/null)
         if [[ "$override" != "true" ]]; then
             for kext in $(printArrayItems "Deprecated:Kexts" "$tools_config" 2> /dev/null); do
-                removeKext "$kext"
+                removeKext "$kext" "$efi/EFI/CLOVER/kexts/Other"
             done
         fi
         for kext in $(printArrayItems "Deprecated:Kexts" "$repo_plist" 2> /dev/null); do
-            removeKext "$kext"
+            removeKext "$kext" "$efi/EFI/CLOVER/kexts/Other"
         done
     ;;
     --install-config)

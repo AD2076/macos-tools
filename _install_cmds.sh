@@ -139,6 +139,8 @@ function installAppsInDirectory() {
 
 function removeKext() {
 # $1: Kext name
+# $2: Directory to remove from
+    if [[ -d "$2" ]]; then local kexts_dest="$2"; fi
     sudo rm -Rf "$kexts_dest/$1"
     removeInstalledItem "Kexts" "$1"
 }
