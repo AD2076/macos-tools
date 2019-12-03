@@ -59,7 +59,7 @@ function installToolWithName() {
     fi
 }
 
-function installEssentialKextWithName() {
+function installCloverKextWithName() {
 # $1: Kext name
     if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
     kext=$(findKext "$1" "$downloads_dir" "$local_kexts_dir")
@@ -145,38 +145,7 @@ case "$1" in
         done
     ;;
     --install-kexts)
-        unarchiveAllInDirectory "$downloads_dir"
-
-        # GitHub kexts
-        for ((downloadIndex=0; 1; downloadIndex++)); do
-            download=$(printValue "Downloads:GitHub:$downloadIndex" "$repo_plist" 2> /dev/null)
-            if [[ $? -ne 0 ]]; then break; fi
-            for ((installIndex=0; 1; installIndex++)); do
-                name=$(printValue "Downloads:GitHub:$downloadIndex:Installations:Kexts:$installIndex:Name" "$repo_plist" 2> /dev/null)
-                if [[ $? -ne 0 ]]; then break; fi
-                installKextWithName "$name"
-            done
-        done
-
-        # Bitbucket kexts
-        for ((downloadIndex=0; 1; downloadIndex++)); do
-            download=$(printValue "Downloads:Bitbucket:$downloadIndex" "$repo_plist" 2> /dev/null)
-            if [[ $? -ne 0 ]]; then break; fi
-                for ((installIndex=0; 1; installIndex++)); do
-                name=$(printValue "Downloads:Bitbucket:$downloadIndex:Installations:Kexts:$installIndex:Name" "$repo_plist" 2> /dev/null)
-                if [[ $? -ne 0 ]]; then break; fi
-                installKextWithName "$name"
-            done
-        done
-
-        # Local kexts
-        for ((index=0; 1; index++)); do
-            name=$(printValue "Local Installations:Kexts:$index:Name" "$repo_plist" 2> /dev/null)
-            if [[ $? -ne 0 ]]; then break; fi
-            installKextWithName "$name"
-        done
-    ;;
-    --install-essential-kexts)
+    --install-clover-kexts)
         unarchiveAllInDirectory "$downloads_dir"
         EFI=$($tools_dir/mount_efi.sh)
         efi_kexts_dest=$EFI/EFI/CLOVER/kexts/Other
@@ -189,9 +158,9 @@ case "$1" in
             for ((installIndex=0; 1; installIndex++)); do
                 name=$(printValue "Downloads:GitHub:$downloadIndex:Installations:Kexts:$installIndex:Name" "$repo_plist" 2> /dev/null)
                 if [[ $? -ne 0 ]]; then break; fi
-                essential=$(printValue "Downloads:GitHub:$downloadIndex:Installations:Kexts:$installIndex:Essential" "$repo_plist" 2> /dev/null)
-                if [[ "$essential" == "true" ]]; then
-                    installEssentialKextWithName "$name"
+                clover=$(printValue "Downloads:GitHub:$downloadIndex:Installations:Kexts:$installIndex:Clover" "$repo_plist" 2> /dev/null)
+                if [[ "$clover" == "true" ]]; then
+                    installCloverKextWithName "$name"
                 fi
             done
         done
@@ -203,9 +172,9 @@ case "$1" in
             for ((installIndex=0; 1; installIndex++)); do
                 name=$(printValue "Downloads:Bitbucket:$downloadIndex:Installations:Kexts:$installIndex:Name" "$repo_plist" 2> /dev/null)
                 if [[ $? -ne 0 ]]; then break; fi
-                essential=$(printValue "Downloads:Bitbucket:$downloadIndex:Installations:Kexts:$installIndex:Essential" "$repo_plist" 2> /dev/null)
-                if [[ "$essential" == "true" ]]; then
-                    installEssentialKextWithName "$name"
+                clover=$(printValue "Downloads:Bitbucket:$downloadIndex:Installations:Kexts:$installIndex:Clover" "$repo_plist" 2> /dev/null)
+                if [[ "$clover" == "true" ]]; then
+                    installCloverKextWithName "$name"
                 fi
             done
         done
@@ -214,9 +183,9 @@ case "$1" in
         for ((index=0; 1; index++)); do
             name=$(printValue "Local Installations:Kexts:$index:Name" "$repo_plist" 2> /dev/null)
             if [[ $? -ne 0 ]]; then break; fi
-            essential=$(printValue "Local Installations:Kexts:$index:Essential" "$repo_plist" 2> /dev/null)
-            if [[ "$essential" == "true" ]]; then
-                installEssentialKextWithName "$name"
+            clover=$(printValue "Local Installations:Kexts:$index:Clover" "$repo_plist" 2> /dev/null)
+            if [[ "$clover" == "true" ]]; then
+                installCloverKextWithName "$name"
             fi
         done
     ;;
@@ -271,7 +240,7 @@ case "$1" in
         $0 --install-tools
         $0 --install-apps
         $0 --remove-deprecated-kexts
-        $0 --install-essential-kexts
+        $0 --install-clover-kexts
         $0 --install-kexts
         $0 --install-lilu-helper
         $0 --update-kernelcache
