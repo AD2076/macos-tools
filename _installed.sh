@@ -4,9 +4,9 @@ DIR=$(dirname ${BASH_SOURCE[0]})
 
 source $DIR/_plist_utils.sh
 
-tbk=~/Library/the-braveknight
+tbk=~/Library/ad2076
 if [[ ! -d $tbk ]]; then mkdir $tbk; fi
-plist=$tbk/org.the-braveknight.installed.plist
+plist=$tbk/org.ad2076.installed.plist
 
 function printInstalledItems() {
 # $1: Array name (key) in root dictionary plist

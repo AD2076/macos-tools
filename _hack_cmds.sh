@@ -15,7 +15,7 @@ hotpatch_dir=$repo_dir/Hotpatch/Downloads
 local_kexts_dir=$repo_dir/Kexts
 build_dir=$repo_dir/Build
 
-tools_config=$tools_dir/org.the-braveknight.config.plist
+tools_config=$tools_dir/org.ad2076.config.plist
 
 if [[ -z "$repo_plist" ]]; then
     if [[ -e "$repo_dir/repo_config.plist" ]]; then
@@ -206,7 +206,7 @@ case "$1" in
         done
     ;;
     --remove-deprecated-kexts)
-        # To override default list of deprecated kexts in macos-tools/org.the-braveknight.deprecated.plist, set 'Deprecated:Override Defaults' to 'true'.
+        # To override default list of deprecated kexts in macos-tools/org.ad2076.deprecated.plist, set 'Deprecated:Override Defaults' to 'true'.
         if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
         override=$(printValue "Deprecated:Override Defaults" "$repo_plist" 2> /dev/null)
         if [[ "$override" != "true" ]]; then

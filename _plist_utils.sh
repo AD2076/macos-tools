@@ -120,10 +120,10 @@ function replaceDict() {
 # $1: Dictionary key
 # $2: Original plist file
 # $3: New plist file
-    printObject "$1" "$3" > /tmp/org.the-braveknight.node.plist
+    printObject "$1" "$3" > /tmp/org.ad2076.node.plist
     delete "$1" "$2"
     addDictionary "$1" "$2"
-    mergePlist /tmp/org.the-braveknight.node.plist "$1" "$2"
+    mergePlist /tmp/org.ad2076.node.plist "$1" "$2"
 }
 
 function indexForItemInArray() {
