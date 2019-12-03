@@ -227,6 +227,7 @@ case "$1" in
     ;;
     --install-lilu-helper)
         if [[ ! -d "$build_dir" ]]; then mkdir $build_dir; fi
+        if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
         createLiluHelper "$build_dir"
         installKext "$build_dir/LiluHelper.kext" "$efi/EFI/CLOVER/kexts/Other"
     ;;
