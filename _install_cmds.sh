@@ -4,7 +4,7 @@ DIR=$(dirname ${BASH_SOURCE[0]})
 
 source $DIR/_installed.sh
 if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
-kexts_directory=$efi/EFI/CLOVER/kexts/Other
+kexts_dest=$efi/EFI/CLOVER/kexts/Other
 #kexts_dest=/Library/Extensions
 tools_dest=/usr/local/bin
 apps_dest=/Applications

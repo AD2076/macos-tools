@@ -189,9 +189,13 @@ case "$1" in
         done
     ;;
     --remove-installed-kexts)
-        if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
         for kext in $(printInstalledItems "Kexts"); do
-            removeKext "$kext" "$efi/EFI/CLOVER/kexts/Other"
+            removeKext "$kext"
+        done
+    ;;
+    --cleanup-mojave)
+        for kext in $(printInstalledItems "Kexts" "true"); do
+            removeKext "$kext" "/Library/Extensions"
         done
     ;;
     --remove-installed-apps)
@@ -206,15 +210,14 @@ case "$1" in
     ;;
     --remove-deprecated-kexts)
         # To override default list of deprecated kexts in macos-tools/org.ad2076.deprecated.plist, set 'Deprecated:Override Defaults' to 'true'.
-        if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
         override=$(printValue "Deprecated:Override Defaults" "$repo_plist" 2> /dev/null)
         if [[ "$override" != "true" ]]; then
             for kext in $(printArrayItems "Deprecated:Kexts" "$tools_config" 2> /dev/null); do
-                removeKext "$kext" "$efi/EFI/CLOVER/kexts/Other"
+                removeKext "$kext"
             done
         fi
         for kext in $(printArrayItems "Deprecated:Kexts" "$repo_plist" 2> /dev/null); do
-            removeKext "$kext" "$efi/EFI/CLOVER/kexts/Other"
+            removeKext "$kext"
         done
     ;;
     --install-config)
@@ -242,6 +245,7 @@ case "$1" in
         $0 --install-tools
         $0 --install-apps
         $0 --remove-deprecated-kexts
+        $0 --cleanup-mojave
         $0 --install-clover-kexts
         $0 --install-lilu-helper
         $0 --update-kernelcache
