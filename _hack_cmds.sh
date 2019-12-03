@@ -228,7 +228,7 @@ case "$1" in
     --install-lilu-helper)
         if [[ ! -d "$build_dir" ]]; then mkdir $build_dir; fi
         createLiluHelper "$build_dir"
-        installKext "$build_dir/LiluHelper.kext"
+        installKext "$build_dir/LiluHelper.kext" "$efi/EFI/CLOVER/kexts/Other"
     ;;
     --update)
         echo "Checking for updates..."
