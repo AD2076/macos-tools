@@ -144,7 +144,6 @@ case "$1" in
             done
         done
     ;;
-    --install-kexts)
     --install-clover-kexts)
         unarchiveAllInDirectory "$downloads_dir"
         EFI=$($tools_dir/mount_efi.sh)
@@ -244,7 +243,6 @@ case "$1" in
         $0 --install-apps
         $0 --remove-deprecated-kexts
         $0 --install-clover-kexts
-        $0 --install-kexts
         $0 --install-lilu-helper
         $0 --update-kernelcache
     ;;

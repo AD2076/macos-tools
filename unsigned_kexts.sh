@@ -1,9 +1,10 @@
 #!/bin/bash
-
-directory=/Library/Extensions
+if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
+directory=$efi/EFI/CLOVER/kexts/Other
+#directory=/Library/Extensions
 
 function showOptions() {
-    echo "-d,  Kexts directory (default: /Library/Extensions)."
+    echo "-d,  Kexts directory (default: $efi/EFI/CLOVER/kexts/Other)."
     echo "-h,  Show this help message."
     echo "Usage: $(basename $0) [-d <Kexts directory>]"
     echo "Example: $(basename $0) -d /Library/Extensions"

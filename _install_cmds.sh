@@ -3,8 +3,9 @@
 DIR=$(dirname ${BASH_SOURCE[0]})
 
 source $DIR/_installed.sh
-
-kexts_dest=/Library/Extensions
+if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
+kexts_directory=$efi/EFI/CLOVER/kexts/Other
+#kexts_dest=/Library/Extensions
 tools_dest=/usr/local/bin
 apps_dest=/Applications
 
@@ -43,7 +44,7 @@ function checkExceptions() {
 
 function installKext() {
 # $1: Kext to install
-# $2: Destination (default: /Library/Extensions)
+# $2: Destination (default: $efi/EFI/CLOVER/kexts/Other)
     if [[ -d "$2" ]]; then local kexts_dest="$2"; fi
     kextName=$(basename $1)
     echo Installing $kextName to $kexts_dest

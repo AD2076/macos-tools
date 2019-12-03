@@ -8,7 +8,8 @@ source $DIR/_plist_utils.sh
 
 output_dir=.
 
-kexts_directory=/Library/Extensions
+if [[ ! -d "$efi" ]]; then efi=$($tools_dir/mount_efi.sh); fi
+kexts_directory=$efi/EFI/CLOVER/kexts/Other
 
 function kextsWithLiluDependency() {
     kexts=$(find $kexts_directory -name "*.kext" -not -name "LiluHelper.kext")
