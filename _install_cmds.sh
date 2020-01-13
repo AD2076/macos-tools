@@ -46,10 +46,12 @@ function installKext() {
 # $1: Kext to install
 # $2: Destination (default: $efi/EFI/CLOVER/kexts/Other)
     if [[ -d "$2" ]]; then local kexts_dest="$2"; fi
-    kextName=$(basename $1)
+    #kextName=$(basename $1)
+    fullName=$1
+    kextName=${fullName##*/}
     echo Installing $kextName to $kexts_dest
     sudo rm -Rf $kexts_dest/$kextName
-    sudo cp -Rf $1 $kexts_dest
+    sudo cp -Rf "$1" $kexts_dest
     addInstalledItem "Kexts" "$kextName"
 }
 
